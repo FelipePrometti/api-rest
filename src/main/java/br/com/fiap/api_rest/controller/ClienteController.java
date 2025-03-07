@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,8 +26,8 @@ public class ClienteController {
     @Autowired
     ClienteService clienteService;
 
-    // Create, Read, Update, Delete
-    // Post, Get, Put, Delete
+    // Create, Read, Update, Delete - CRUD
+    // Post, Get, Put, Delete - Verbos HTTP correspondentes
 
     @PostMapping
     public ResponseEntity<Cliente> createCliente(@Valid @RequestBody ClienteRequest cliente) {
@@ -37,13 +36,13 @@ public class ClienteController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ClienteResponse>> readClientes(@RequestParam(required = false) int page) {
-        Pageable pageable = PageRequest
-                .of(page, 2,
-                        Sort.by("categoria").ascending().and(Sort.by("nome").ascending()));
+    public ResponseEntity<Page<ClienteResponse>> readClientes(@RequestParam(required = true) int page) {
+        Pageable pageable = PageRequest.of(page, 2, Sort.by("categoria").ascending().and(Sort.by("nome").ascending()));
         return new ResponseEntity<>(clienteService.findAll(pageable), HttpStatus.OK);
     }
 
+    // PathVariable = parâmetro diretamente na URL, ex: /clientes/1
+    // RequestParam = parâmetro como query, ex: /clientes/?id=1
     @GetMapping("/{id}")
     public ResponseEntity<ClienteResponse> readCliente(@PathVariable Long id) {
         Optional<Cliente> cliente = clienteRepository.findById(id);
@@ -54,7 +53,8 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cliente> updateCliente(@PathVariable Long id, @RequestBody Cliente cliente) {
+    public ResponseEntity<Cliente> updateCliente(@PathVariable Long id,
+                                                 @RequestBody Cliente cliente) {
         Optional<Cliente> clienteExistente = clienteRepository.findById(id);
         if (clienteExistente.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
