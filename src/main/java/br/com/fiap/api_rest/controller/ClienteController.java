@@ -74,7 +74,7 @@ public class ClienteController {
         if (cliente.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(clienteService.clienteToResponse(cliente.get(), false),HttpStatus.OK);
+        return new ResponseEntity<>(clienteService.clienteToResponse(cliente.get()), HttpStatus.OK);
     }
 
     @Operation(summary = "Atualiza um cliente existente")
