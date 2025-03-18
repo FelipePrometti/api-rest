@@ -1,5 +1,4 @@
 package br.com.fiap.api_rest.controller;
-
 import br.com.fiap.api_rest.dto.ClienteRequest;
 import br.com.fiap.api_rest.dto.ClienteResponse;
 import br.com.fiap.api_rest.model.Cliente;
@@ -74,8 +73,7 @@ public class ClienteController {
         if (cliente.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(clienteService.clienteToResponse(cliente.get()), HttpStatus.OK);
-    }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);    }
 
     @Operation(summary = "Atualiza um cliente existente")
     @ApiResponses(value = {
